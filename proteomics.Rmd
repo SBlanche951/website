@@ -1,0 +1,121 @@
+---
+title: "Proteomics"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float: true
+layout: page
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load new packages, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+
+if (!require("here")) {install.packages("here"); require("here")}
+if (!require("readxl")) {install.packages("readxl"); require("readxl")}
+if (!require("pheatmap")) {install.packages("pheatmap"); require("pheatmap")}
+if (!require("tibble")) {install.packages("tibble"); require("tibble")}
+if (!require("openxlsx")) {install.packages("openxlsx"); require("openxlsx")}
+if (!require("writexl")) {install.packages("writexl"); require("writexl")}
+if (!require("knitr")) {install.packages("knitr"); require("knitr")}
+
+```
+
+
+# List of Proteomic Datasets
+
+[Four Core Genotype](#FourCoreGenotype) <br>
+[PT ACE2 KO](#PTACE2KO) <br>
+
+# Four Core Genotype
+
+<a id="FourCoreGenotype"></a>
+
+*Description here.*
+
+## Heatmap of dataframe
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=12, fig.width=5}
+
+#load data
+FCG <- read_excel("Dataset/FCG.xlsx")
+FCG <- FCG %>% column_to_rownames("Protein")
+
+#make heat map
+palette_blues <- colorRampPalette(colors = c("#4575B4", "#91BFDB", "#E0F3F8", "white", "#FEE090", "#FEE090", "#FEE090", "#FC8D59","#FC8D59", "#FC8D59", "#FC8D59", "#D73027", "#D73027", "#D73027", "#D73027"))(100)
+
+f1 <- pheatmap(FCG , cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
+         show_rownames = TRUE, show_colnames = TRUE, main = "Heatmap of Kidney Transporter Abundance", angle_col = 45, fontsize_col = 10, fontsize = 10, fontsize_row = 10, color = palette_blues)
+
+f1
+```
+
+## Table of dataframe
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=10, fig.width=3}
+
+kable(head(FCG, n = nrow(FCG)))
+```
+
+## Link to download
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=15, fig.width=6}
+
+# add protein column 
+FCG_data <- FCG %>% rownames_to_column("Protein")
+
+# make downloadable link
+if (!dir.exists("raw data")) dir.create("raw data")
+write.xlsx(FCG_data, file = "raw data/FCG_data.xlsx")
+```
+
+[Download FCG data](raw data/FCG_data.xlsx)
+
+# PT ACE2 KO
+
+<a id="PTACE2KO"></a>
+
+*Description here.*
+
+## Heatmap of dataframe
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=12, fig.width=5}
+
+#load data
+PT_ACE2_KO <- read_excel("Dataset/PT ACE2 KO.xlsx")
+PT_ACE2_KO <- PT_ACE2_KO %>% column_to_rownames("Protein")
+
+palette_blues <- colorRampPalette(colors = c("#91BFDB", "#E0F3F8", "white", "#FEE090", "#FEE090", "#FEE090", "#FC8D59","#FC8D59", "#FC8D59", "#FC8D59", "#D73027", "#D73027", "#D73027", "#D73027"))(100)
+
+#make heat map
+f2 <- pheatmap(PT_ACE2_KO , cluster_rows = FALSE, cluster_cols = FALSE, scale = "none", 
+         show_rownames = TRUE, show_colnames = TRUE, main = "Heatmap", angle_col = 45, fontsize_col = 10, fontsize = 10, fontsize_row = 10, color = palette_blues)
+
+f2
+```
+
+## Table of dataframe
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=10, fig.width=3}
+
+kable(head(PT_ACE2_KO, n = nrow(PT_ACE2_KO)))
+```
+
+## Link to download
+
+```{r, echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.height=15, fig.width=6}
+
+# add protein column 
+PT_ACE2_KO_data <- PT_ACE2_KO %>% rownames_to_column("Protein")
+
+# make downloadable link
+if (!dir.exists("raw data")) dir.create("raw data")
+write.xlsx(FCG_data, file = "raw data/PT_ACE2_KO_data.xlsx")
+```
+
+[Download PT ACE2 KO data](raw data/PT_ACE2_KO_data.xlsx)
+

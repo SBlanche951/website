@@ -1,3 +1,2 @@
-# website
-my first website
-## I love this
+# mywebsite
+My first website
